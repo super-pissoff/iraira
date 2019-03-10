@@ -1,0 +1,12 @@
+{
+  "name": "iraira",
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@now/next" },
+    { "src": "api/*.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/api/help", "methods": ["POST"], "dest": "api/help.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
