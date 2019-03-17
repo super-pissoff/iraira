@@ -6,7 +6,10 @@
     { "src": "api/*.js", "use": "@now/node" }
   ],
   "routes": [
+    { "src": "/", "dest": "api/redirect.js" },
     { "src": "/api/help", "methods": ["POST"], "dest": "api/help.js" },
+    { "src": "/api/lang", "dest": "api/lang.js" },
+    { "src": "/(?<lang>(en|ja))", "dest": "/index?lang=$lang" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }

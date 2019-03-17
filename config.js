@@ -13,16 +13,19 @@ function normalize(url) {
 
 const appHost = process.env.GLOBAL_HOST || "localhost";
 const appPort = Number(process.env.GLOBAL_PORT || 3000);
-const base = normalize(`${appHost}:${appPort}`);
+const apiHost = "chaus.now.sh";
+const apiPort = Number("443");
 
 module.exports = {
   isDev: process.env.NODE_ENV !== "production",
   host: process.env.HOST || "localhost",
   title: `${title} - ${description}`,
   port: Number(process.env.PORT || 3000),
+  origin: normalize(`${appHost}:${appPort}`),
   api: {
-    host: "chaus.now.sh",
-    port: Number("443"),
+    host: apiHost,
+    port: apiPort,
+    base: normalize(`${apiHost}:${apiPort}`),
     id: process.env.KOIKI_IRAIRA_PARTY_ID
   },
   webhook: {

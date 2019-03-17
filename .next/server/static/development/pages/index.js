@@ -850,15 +850,18 @@ function normalize(url) {
 
 var appHost = process.env.GLOBAL_HOST || "localhost";
 var appPort = Number(process.env.GLOBAL_PORT || 3000);
-var base = normalize("".concat(appHost, ":").concat(appPort));
+var apiHost = "chaus.now.sh";
+var apiPort = Number("443");
 module.exports = {
   isDev: "development" !== "production",
   host: process.env.HOST || "localhost",
   title: "".concat(title, " - ").concat(description),
   port: Number(process.env.PORT || 3000),
+  origin: normalize("".concat(appHost, ":").concat(appPort)),
   api: {
-    host: "chaus.now.sh",
-    port: Number("443"),
+    host: apiHost,
+    port: apiPort,
+    base: normalize("".concat(apiHost, ":").concat(apiPort)),
     id: process.env.KOIKI_IRAIRA_PARTY_ID
   },
   webhook: {
@@ -1481,8 +1484,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Signature__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/Signature */ "./components/Signature.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../config */ "./config.js");
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_config__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _reducers_party__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../reducers/party */ "./reducers/party.js");
-/* harmony import */ var _reducers_relief__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../reducers/relief */ "./reducers/relief.js");
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! url */ "url");
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _reducers_lang__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../reducers/lang */ "./reducers/lang.js");
+/* harmony import */ var _reducers_party__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../reducers/party */ "./reducers/party.js");
+/* harmony import */ var _reducers_relief__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../reducers/relief */ "./reducers/relief.js");
 
 
 
@@ -1496,26 +1502,16 @@ var _jsxFileName = "/Users/sideroad/workspace/iraira/pages/index.js";
 
 
 
-function normalize(url) {
-  var protocol = (url.match(/(http|https)\:\/\//) || [])[1];
 
-  if (/\:443$/.test(url)) {
-    protocol = protocol || "https";
-  } else {
-    protocol = "http";
-  }
-
-  return protocol + "://" + url.replace(/(\:80|\:443)$/, "");
-}
 
 var Home = function Home(props) {
   return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_components_Signature__WEBPACK_IMPORTED_MODULE_7__["default"], {
     title: _config__WEBPACK_IMPORTED_MODULE_8___default.a.title,
-    lead: "SUPER PISS OFF POINT",
-    button: "UPSET",
+    lead: props.lang.lead,
+    button: props.lang.button,
     point: props.party.point,
     onChangePoint: function onChangePoint(point) {
-      isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(props.base, "/apis/iraira/parties/").concat(props.id), {
+      isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.api.base, "/apis/iraira/parties/").concat(props.id), {
         method: "PATCH",
         headers: {
           "content-type": "application/json"
@@ -1527,7 +1523,7 @@ var Home = function Home(props) {
     },
     reliefs: props.reliefs,
     onHelp: function onHelp(relief) {
-      isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("/apis/help", {
+      isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("/api/help", {
         method: "POST",
         headers: {
           "content-type": "application/json"
@@ -1537,33 +1533,38 @@ var Home = function Home(props) {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20
+      lineNumber: 12
     },
     __self: this
   });
 };
 
-var fetchParty =
+var fetchLang =
 /*#__PURE__*/
 function () {
   var _ref2 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee(_ref) {
-    var store, req, base, id, res;
+    var store, req, lang, defaults, res;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            store = _ref.store, req = _ref.req, base = _ref.base, id = _ref.id;
-            _context.next = 3;
-            return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(base, "/apis/iraira/parties/").concat(id)).then(function (res) {
-              return res.json();
+            store = _ref.store, req = _ref.req, lang = _ref.lang;
+            defaults = {
+              lead: "SUPER PISS OFF POINT",
+              button: "UPSET"
+            };
+            _context.next = 4;
+            return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.origin, "/api/lang?lang=").concat(lang)).then(function (res) {
+              return res.ok ? res.json() : defaults;
+            }, function () {
+              return defaults;
             });
 
-          case 3:
+          case 4:
             res = _context.sent;
-            console.log(res.body);
-            store.dispatch(Object(_reducers_party__WEBPACK_IMPORTED_MODULE_9__["set"])(res));
+            store.dispatch(Object(_reducers_lang__WEBPACK_IMPORTED_MODULE_10__["set"])(res));
 
           case 6:
           case "end":
@@ -1573,31 +1574,31 @@ function () {
     }, _callee);
   }));
 
-  return function fetchParty(_x) {
+  return function fetchLang(_x) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var fetchReliefs =
+var fetchParty =
 /*#__PURE__*/
 function () {
   var _ref4 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee2(_ref3) {
-    var store, req, base, id, res;
+    var store, req, id, res;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            store = _ref3.store, req = _ref3.req, base = _ref3.base, id = _ref3.id;
+            store = _ref3.store, req = _ref3.req, id = _ref3.id;
             _context2.next = 3;
-            return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(base, "/apis/iraira/reliefs?party=").concat(id, "&orderBy=-decrease")).then(function (res) {
+            return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.api.base, "/apis/iraira/parties/").concat(id)).then(function (res) {
               return res.json();
             });
 
           case 3:
             res = _context2.sent;
-            store.dispatch(Object(_reducers_relief__WEBPACK_IMPORTED_MODULE_10__["sets"])(res));
+            store.dispatch(Object(_reducers_party__WEBPACK_IMPORTED_MODULE_11__["set"])(res));
 
           case 5:
           case "end":
@@ -1607,50 +1608,33 @@ function () {
     }, _callee2);
   }));
 
-  return function fetchReliefs(_x2) {
+  return function fetchParty(_x2) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-Home.getInitialProps =
+var fetchReliefs =
 /*#__PURE__*/
 function () {
   var _ref6 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee3(_ref5) {
-    var store, req, args, base, id;
+    var store, req, id, res;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            store = _ref5.store, req = _ref5.req, args = Object(_babel_runtime_corejs2_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref5, ["store", "req"]);
-            base = normalize("".concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.api.host, ":").concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.api.port));
-            id = _config__WEBPACK_IMPORTED_MODULE_8___default.a.api.id;
-            console.log(id);
-            _context3.next = 6;
-            return fetchParty({
-              store: store,
-              req: req,
-              base: base,
-              id: id
+            store = _ref5.store, req = _ref5.req, id = _ref5.id;
+            _context3.next = 3;
+            return isomorphic_unfetch__WEBPACK_IMPORTED_MODULE_6___default()("".concat(_config__WEBPACK_IMPORTED_MODULE_8___default.a.api.base, "/apis/iraira/reliefs?party=").concat(id, "&orderBy=-decrease")).then(function (res) {
+              return res.json();
             });
 
-          case 6:
-            _context3.next = 8;
-            return fetchReliefs({
-              store: store,
-              req: req,
-              base: base,
-              id: id
-            });
+          case 3:
+            res = _context3.sent;
+            store.dispatch(Object(_reducers_relief__WEBPACK_IMPORTED_MODULE_12__["sets"])(res));
 
-          case 8:
-            return _context3.abrupt("return", {
-              base: base,
-              id: id
-            });
-
-          case 9:
+          case 5:
           case "end":
             return _context3.stop();
         }
@@ -1658,17 +1642,130 @@ function () {
     }, _callee3);
   }));
 
-  return function (_x3) {
+  return function fetchReliefs(_x3) {
     return _ref6.apply(this, arguments);
+  };
+}();
+
+Home.getInitialProps =
+/*#__PURE__*/
+function () {
+  var _ref8 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  /*#__PURE__*/
+  _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.mark(function _callee4(_ref7) {
+    var store, req, lang, args, id;
+    return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_1___default.a.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            store = _ref7.store, req = _ref7.req, lang = _ref7.query.lang, args = Object(_babel_runtime_corejs2_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref7, ["store", "req", "query"]);
+            id = _config__WEBPACK_IMPORTED_MODULE_8___default.a.api.id;
+            _context4.next = 4;
+            return fetchLang({
+              store: store,
+              req: req,
+              lang: lang
+            });
+
+          case 4:
+            _context4.next = 6;
+            return fetchParty({
+              store: store,
+              req: req,
+              id: id
+            });
+
+          case 6:
+            _context4.next = 8;
+            return fetchReliefs({
+              store: store,
+              req: req,
+              id: id
+            });
+
+          case 8:
+            return _context4.abrupt("return", {
+              id: id
+            });
+
+          case 9:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function (_x4) {
+    return _ref8.apply(this, arguments);
   };
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["connect"])(function (state) {
   return {
+    lang: state.lang.item,
     party: state.party.item,
     reliefs: state.relief.items
   };
 }, {})(Home));
+
+/***/ }),
+
+/***/ "./reducers/lang.js":
+/*!**************************!*\
+  !*** ./reducers/lang.js ***!
+  \**************************/
+/*! exports provided: default, set */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return reducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "set", function() { return set; });
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+
+var GET_START = "lang/GET_START";
+var GET_SUCCESS = "lang/GET_SUCCESS";
+var GET_FAIL = "lang/GET_FAIL";
+var initialState = {
+  item: {},
+  loaded: false,
+  loading: false
+};
+function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  switch (action.type) {
+    case GET_START:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: true
+      });
+
+    case GET_SUCCESS:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: false,
+        loaded: true,
+        item: action.body
+      });
+
+    case GET_FAIL:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: false,
+        loaded: false,
+        error: action.err
+      });
+
+    default:
+      return state;
+  }
+}
+function set(body) {
+  return {
+    type: GET_SUCCESS,
+    body: body
+  };
+}
 
 /***/ }),
 
@@ -2006,6 +2103,17 @@ module.exports = require("regenerator-runtime");
 /***/ (function(module, exports) {
 
 module.exports = require("styled-components");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("url");
 
 /***/ })
 

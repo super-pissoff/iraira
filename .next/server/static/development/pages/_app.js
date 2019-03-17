@@ -1585,13 +1585,74 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _relief__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./relief */ "./reducers/relief.js");
 /* harmony import */ var _party__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./party */ "./reducers/party.js");
+/* harmony import */ var _lang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lang */ "./reducers/lang.js");
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   party: _party__WEBPACK_IMPORTED_MODULE_2__["default"],
-  relief: _relief__WEBPACK_IMPORTED_MODULE_1__["default"]
+  relief: _relief__WEBPACK_IMPORTED_MODULE_1__["default"],
+  lang: _lang__WEBPACK_IMPORTED_MODULE_3__["default"]
 }));
+
+/***/ }),
+
+/***/ "./reducers/lang.js":
+/*!**************************!*\
+  !*** ./reducers/lang.js ***!
+  \**************************/
+/*! exports provided: default, set */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return reducer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "set", function() { return set; });
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+
+var GET_START = "lang/GET_START";
+var GET_SUCCESS = "lang/GET_SUCCESS";
+var GET_FAIL = "lang/GET_FAIL";
+var initialState = {
+  item: {},
+  loaded: false,
+  loading: false
+};
+function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  switch (action.type) {
+    case GET_START:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: true
+      });
+
+    case GET_SUCCESS:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: false,
+        loaded: true,
+        item: action.body
+      });
+
+    case GET_FAIL:
+      return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+        loading: false,
+        loaded: false,
+        error: action.err
+      });
+
+    default:
+      return state;
+  }
+}
+function set(body) {
+  return {
+    type: GET_SUCCESS,
+    body: body
+  };
+}
 
 /***/ }),
 
