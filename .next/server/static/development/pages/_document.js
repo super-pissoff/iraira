@@ -2213,36 +2213,44 @@ function (_Document) {
           lineNumber: 42
         },
         __self: this
-      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("script", {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js",
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("meta", {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 47
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("script", {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js",
+        src: "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 48
+          lineNumber: 51
         },
         __self: this
-      }), this.props.styleTags), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("body", {
+      }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("script", {
+        src: "https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js",
         __source: {
           fileName: _jsxFileName,
           lineNumber: 52
         },
         __self: this
+      }), this.props.styleTags), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("body", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 56
+        },
+        __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(next_document__WEBPACK_IMPORTED_MODULE_8__["Main"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 53
+          lineNumber: 57
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(next_document__WEBPACK_IMPORTED_MODULE_8__["NextScript"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 54
+          lineNumber: 58
         },
         __self: this
       })));

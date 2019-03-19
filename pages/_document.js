@@ -44,6 +44,10 @@ export default class MyDocument extends Document {
             type="text/css"
             href="/static/css/normalize.css"
           />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+          />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js" />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js" />
           {/* Step 5: Output the styles in the head  */}
