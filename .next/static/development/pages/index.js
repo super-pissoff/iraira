@@ -172,8 +172,48 @@ __webpack_require__.r(__webpack_exports__);
 
 var _jsxFileName = "/Users/sideroad/workspace/iraira/components/Signature.js";
 
+function _templateObject20() {
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])([""]);
+
+  _templateObject20 = function _templateObject20() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject19() {
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  0% {\n    transform: rotateY(90deg);\n    opacity: 0;\n  }\n  100% {\n    transform: rotateY(360deg);\n    opacity: 1;\n  }\n"]);
+
+  _templateObject19 = function _templateObject19() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject18() {
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n          ", " 0.2s forwards\n        "]);
+
+  _templateObject18 = function _templateObject18() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject17() {
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  font-size: 20px;\n  color: #f5f5f5c2;\n  text-shadow: 0px 0px 5px #ffffff;\n  cursor: pointer;\n  display: ", ";\n  background: #000000c0;\n  transform: rotateY(90deg);\n  animation: ", ";\n  animation-delay: ", "s;\n"]);
+
+  _templateObject17 = function _templateObject17() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject16() {
-  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  font-size: 20px;\n  color: #f5f5f5c2;\n  text-shadow: 0px 0px 5px #ffffff;\n"]);
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  list-style-type: none;\n  z-index: 1;\n"]);
 
   _templateObject16 = function _templateObject16() {
     return data;
@@ -358,31 +398,55 @@ function (_Component) {
       shaking: false,
       helping: false,
       exploded: false,
+      open: false,
       power: 0,
+      reliefs: props.reliefs.filter(function (relief) {
+        return props.point >= relief.decrease;
+      }),
       relief: props.reliefs.find(function (relief) {
         return props.point >= relief.decrease;
       }) || DEFAULT_RELIEF
     };
     _this.keepPress = _this.keepPress.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
     _this.help = _this.help.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
+    _this.select = _this.select.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
+    _this.toggle = _this.toggle.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
     _this.resetHelp = _this.resetHelp.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
     _this.leavePress = _this.leavePress.bind(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5__["default"])(_this));
     return _this;
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(Signature, [{
+    key: "toggle",
+    value: function toggle() {
+      this.setState({
+        open: !this.state.open
+      });
+    }
+  }, {
+    key: "select",
+    value: function select(relief) {
+      this.setState({
+        relief: relief
+      });
+    }
+  }, {
     key: "help",
     value: function help() {
       var _this2 = this;
 
       var point = this.state.point - this.state.relief.decrease;
       var relief = this.state.relief;
+      var reliefs = this.props.reliefs.filter(function (relief) {
+        return point >= relief.decrease;
+      }) || [DEFAULT_RELIEF];
       this.setState({
         helping: true,
         point: point,
-        relief: this.props.reliefs.find(function (_relief) {
-          return point >= _relief.decrease;
-        }) || DEFAULT_RELIEF
+        reliefs: reliefs,
+        relief: reliefs.find(function (_relief) {
+          return _this2.state.relief.id === _relief.id;
+        }) || reliefs[0] || DEFAULT_RELIEF
       }, function () {
         _this2.props.onChangePoint(point);
 
@@ -427,13 +491,17 @@ function (_Component) {
       clearInterval(this.interval);
       this.interval = undefined;
       var point = this.state.point + this.state.power * 2;
+      var reliefs = this.props.reliefs.filter(function (relief) {
+        return point >= relief.decrease;
+      }) || [DEFAULT_RELIEF];
       this.setState({
         shaking: false,
         exploded: true,
         point: point,
-        relief: this.props.reliefs.find(function (relief) {
-          return point >= relief.decrease;
-        }) || DEFAULT_RELIEF
+        reliefs: reliefs,
+        relief: reliefs.find(function (relief) {
+          return _this4.state.relief.id === relief.id;
+        }) || reliefs[0] || DEFAULT_RELIEF
       }, function () {
         _this4.props.onChangePoint(_this4.state.point);
       });
@@ -441,55 +509,57 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this5 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 92
+          lineNumber: 120
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(next_server_head__WEBPACK_IMPORTED_MODULE_9___default.a, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 93
+          lineNumber: 121
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("title", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 94
+          lineNumber: 122
         },
         __self: this
       }, this.props.title)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Smoke__WEBPACK_IMPORTED_MODULE_10__["default"], {
         point: this.state.shaking ? 10000 + this.state.point : this.state.point,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 96
+          lineNumber: 124
         },
         __self: this
       }), !this.state.shaking && this.state.exploded ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_Explode__WEBPACK_IMPORTED_MODULE_11__["default"], {
         power: this.state.power,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 102
+          lineNumber: 130
         },
         __self: this
       }) : null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Bg, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 104
+          lineNumber: 132
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Main, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 105
+          lineNumber: 133
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: this.state.shaking ? "shake-hard" : "",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 106
+          lineNumber: 134
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Button, {
@@ -500,47 +570,90 @@ function (_Component) {
         onTouchEnd: this.leavePress,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 107
+          lineNumber: 135
         },
         __self: this
       }, this.props.button)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Point, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 117
+          lineNumber: 145
         },
         __self: this
       }, this.state.point), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Lead, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 118
+          lineNumber: 146
         },
         __self: this
       }, this.props.lead)), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 120
+          lineNumber: 148
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Places, {
+        onClick: this.toggle,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 149
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Place, {
+        open: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 121
+          lineNumber: 150
         },
         __self: this
-      }, this.state.relief.place), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Ambulance, {
+      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Option, {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 151
+        },
+        __self: this
+      }, this.state.relief.place, this.state.relief.place ? react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
+        className: "fa fa-caret-down",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 154
+        },
+        __self: this
+      }) : null)), this.state.reliefs.filter(function (relief) {
+        return relief.id !== _this5.state.relief.id;
+      }).map(function (relief, index) {
+        return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Place, {
+          key: relief.id,
+          open: _this5.state.open,
+          index: index,
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 161
+          },
+          __self: this
+        }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Option, {
+          onClick: function onClick() {
+            return _this5.select(relief);
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 162
+          },
+          __self: this
+        }, relief.place));
+      })), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(Ambulance, {
         helping: this.state.helping,
         onClick: this.help,
         onAnimationEnd: this.resetHelp,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 122
+          lineNumber: 168
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("i", {
         className: "fa fa-ambulance",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 127
+          lineNumber: 173
         },
         __self: this
       }))));
@@ -566,7 +679,16 @@ var help = Object(styled_components__WEBPACK_IMPORTED_MODULE_8__["keyframes"])(_
 var Ambulance = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].button(_templateObject14(), function (props) {
   return props.helping ? Object(styled_components__WEBPACK_IMPORTED_MODULE_8__["css"])(_templateObject15(), help) : "";
 });
-var Place = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject16());
+var Places = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].ul(_templateObject16());
+var Place = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].li(_templateObject17(), function (props) {
+  return props.open ? "block" : "none";
+}, function (props) {
+  return props.open ? Object(styled_components__WEBPACK_IMPORTED_MODULE_8__["css"])(_templateObject18(), screw) : "";
+}, function (props) {
+  return props.index * 0.1;
+});
+var screw = Object(styled_components__WEBPACK_IMPORTED_MODULE_8__["keyframes"])(_templateObject19());
+var Option = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].a(_templateObject20());
 /* harmony default export */ __webpack_exports__["default"] = (Signature);
 
 /***/ }),

@@ -17,26 +17,48 @@ class Signature extends Component {
       shaking: false,
       helping: false,
       exploded: false,
+      open: false,
       power: 0,
+      reliefs: props.reliefs.filter(relief => props.point >= relief.decrease),
       relief:
         props.reliefs.find(relief => props.point >= relief.decrease) ||
         DEFAULT_RELIEF
     };
     this.keepPress = this.keepPress.bind(this);
     this.help = this.help.bind(this);
+    this.select = this.select.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.resetHelp = this.resetHelp.bind(this);
     this.leavePress = this.leavePress.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      open: !this.state.open
+    });
+  }
+
+  select(relief) {
+    this.setState({
+      relief
+    });
   }
 
   help() {
     const point = this.state.point - this.state.relief.decrease;
     const relief = this.state.relief;
+    const reliefs = this.props.reliefs.filter(
+      relief => point >= relief.decrease
+    ) || [DEFAULT_RELIEF];
+
     this.setState(
       {
         helping: true,
         point,
+        reliefs,
         relief:
-          this.props.reliefs.find(_relief => point >= _relief.decrease) ||
+          reliefs.find(_relief => this.state.relief.id === _relief.id) ||
+          reliefs[0] ||
           DEFAULT_RELIEF
       },
       () => {
@@ -72,13 +94,19 @@ class Signature extends Component {
     clearInterval(this.interval);
     this.interval = undefined;
     const point = this.state.point + this.state.power * 2;
+    const reliefs = this.props.reliefs.filter(
+      relief => point >= relief.decrease
+    ) || [DEFAULT_RELIEF];
+
     this.setState(
       {
         shaking: false,
         exploded: true,
         point,
+        reliefs,
         relief:
-          this.props.reliefs.find(relief => point >= relief.decrease) ||
+          reliefs.find(relief => this.state.relief.id === relief.id) ||
+          reliefs[0] ||
           DEFAULT_RELIEF
       },
       () => {
@@ -118,7 +146,25 @@ class Signature extends Component {
           <Lead>{this.props.lead}</Lead>
         </Main>
         <div>
-          <Place>{this.state.relief.place}</Place>
+          <Places onClick={this.toggle}>
+            <Place open>
+              <Option>
+                {this.state.relief.place}
+                {this.state.relief.place ? (
+                  <i className="fa fa-caret-down" />
+                ) : null}
+              </Option>
+            </Place>
+            {this.state.reliefs
+              .filter(relief => relief.id !== this.state.relief.id)
+              .map((relief, index) => (
+                <Place key={relief.id} open={this.state.open} index={index}>
+                  <Option onClick={() => this.select(relief)}>
+                    {relief.place}
+                  </Option>
+                </Place>
+              ))}
+          </Places>
           <Ambulance
             helping={this.state.helping}
             onClick={this.help}
@@ -299,13 +345,42 @@ const Ambulance = styled.button`
       : ""};
 `;
 
-const Place = styled.div`
+const Places = styled.ul`
   position: absolute;
   top: 20px;
   right: 20px;
+  list-style-type: none;
+  z-index: 1;
+`;
+
+const Place = styled.li`
   font-size: 20px;
   color: #f5f5f5c2;
   text-shadow: 0px 0px 5px #ffffff;
+  cursor: pointer;
+  display: ${props => (props.open ? "block" : "none")};
+  background: #000000c0;
+  transform: rotateY(90deg);
+  animation: ${props =>
+    props.open
+      ? css`
+          ${screw} 0.2s forwards
+        `
+      : ""};
+  animation-delay: ${props => props.index * 0.1}s;
 `;
+
+const screw = keyframes`
+  0% {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(360deg);
+    opacity: 1;
+  }
+`;
+
+const Option = styled.a``;
 
 export default Signature;
